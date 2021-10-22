@@ -1,0 +1,21 @@
+export const path = {
+  home: '/',
+  dashboard: '/dashboard',
+  terms: '/terms',
+  register: '/auth/sign-up',
+  login: '/auth/login',
+  verify: '/auth/account-verification',
+  resend: '/auth/resend-code',
+  reset: '/auth/reset-password',
+  changePassword: '/change-password',
+  profile: '/profile',
+  institution: '/institution',
+  members: '/members',
+  contributions: '/contributions',
+  loans: '/loans',
+  donations: '/donations',
+  expenses: '/expenses',
+  incomes: '/incomes',
+  users: '/users',
+  clients: 'admin/clients'
+}
