@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { autorun } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useHistory } from 'react-router'
 import { Layout } from 'antd'
@@ -35,14 +34,10 @@ const Login = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    autorun(() => {
-      if (authStore.user) {
-        setUser(user)
-        setRedirectToReferrer(true)
-      }
-    })
-  }, [])
+  if (authStore.success && authStore.user) {
+    setUser(user)
+    setRedirectToReferrer(true)
+  }
 
   if (redirectToReferer && user) {
     const { role } = user

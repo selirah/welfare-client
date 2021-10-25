@@ -57,6 +57,7 @@ export class AuthStore {
       if (response.status === 200) {
         this.onSetSubmitting(false)
         this.onSetUser(response.data)
+        this.onSetSuccess(true)
         localStorage.setItem('user', JSON.stringify(response.data))
         localStorage.setItem('token', JSON.stringify(response.data.token))
       }
