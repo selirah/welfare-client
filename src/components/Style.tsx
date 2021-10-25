@@ -61,7 +61,6 @@ const ToastWrapper = styled.div`
   $orange: #ff9f43 !default; //$warning
   $red: #ea5455 !default; //$danger
   $nagaiblue: #0090fe !default; //$primary
-  $nagaipurple: #7367f0 !default; //$secondary
   $white: #fff !default;
   $toast-border-radius: 0.286rem !default;
   $toast-box-shadow: 0 2px 20px 0 rgba($black, 0.08) !default;

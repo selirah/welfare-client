@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react'
-import { autorun } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useHistory } from 'react-router'
 import { Layout } from 'antd'
-import LoginForm from 'containers/auth/LoginForm'
-import { LoginFields, User } from 'interfaces'
+import ResetPasswordForm from 'containers/auth/ResetPasswordForm'
+import { ResendReset, User } from 'interfaces'
 import { path } from 'helpers/path'
 import bg from 'img/bg.png'
 import { roles } from 'helpers/constants'
 import { useStore } from 'hooks/StoreHook'
-import { isUserLoggedIn } from 'utils'
+import { isUserLoggedIn, openNotification } from 'utils'
 
 const { Content } = Layout
 
-const Login = observer(() => {
+const ResetPassword = observer(() => {
   const { authStore } = useStore()
-  const [initValues] = useState<LoginFields>({
-    email: '',
-    password: ''
+
+  const [initValues] = useState<ResendReset>({
+    email: ''
   })
   const history = useHistory()
   const [redirectToReferer, setRedirectToReferrer] = useState(false)
@@ -35,14 +34,14 @@ const Login = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    autorun(() => {
-      if (authStore.user) {
-        setUser(user)
-        setRedirectToReferrer(true)
-      }
-    })
-  }, [])
+  if (authStore.success && !authStore.user) {
+    openNotification(
+      'success',
+      'Nice!',
+      'A new temporal password has been send to you via SMS. Use it to login and change your password'
+    )
+    history.push(path.login)
+  }
 
   if (redirectToReferer && user) {
     const { role } = user
@@ -62,8 +61,8 @@ const Login = observer(() => {
     }
   }
 
-  const onSubmit = (payload: LoginFields) => {
-    authStore.login(payload)
+  const onSubmit = (payload: ResendReset) => {
+    authStore.resetPassword(payload)
   }
 
   return (
@@ -76,7 +75,7 @@ const Login = observer(() => {
           minHeight: '100vh'
         }}
       >
-        <LoginForm
+        <ResetPasswordForm
           btnLoad={authStore.isSubmitting}
           error={authStore.error}
           onSubmit={onSubmit}
@@ -87,4 +86,4 @@ const Login = observer(() => {
   )
 })
 
-export default Login
+export default ResetPassword

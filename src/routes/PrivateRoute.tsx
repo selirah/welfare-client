@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Route, Redirect, useHistory } from 'react-router-dom'
-import { Layout, message } from 'antd'
+import React, { useState } from 'react'
+import { Route, Redirect /*, useHistory*/ } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import { Layout } from 'antd'
 import { path } from 'helpers/path'
 import { SideBar } from 'components/menu/SideBar'
 import { TopBar } from 'components/menu/TopBar'
-import { constants } from 'helpers/constants'
-import { AuthContext } from 'contexts'
+import { useStore } from 'hooks/StoreHook'
 
-const PrivateRoute: React.FC<any> = ({ component: Component, ...rest }) => {
-  const { user } = useContext(AuthContext)
+const PrivateRoute: React.FC<any> = observer((props) => {
+  const { component: Component, ...rest } = props
+  const {
+    authStore: { user }
+  } = useStore()
   const [collapsed, setCollapsed] = useState(false)
-  const history = useHistory()
+  // const history = useHistory()
 
   // useEffect(() => {
   //   const { switchAdminSuccess, switchAdminFailure, page, error } = adminStore
@@ -31,11 +34,11 @@ const PrivateRoute: React.FC<any> = ({ component: Component, ...rest }) => {
   }
 
   const onImpersonate = () => {
-    const payload = {
-      id: user!.admin_id,
-      admin_id: 0,
-      action: 'admin'
-    }
+    // const payload = {
+    //   id: user!.admin_id,
+    //   admin_id: 0,
+    //   action: 'admin'
+    // }
     // dispatch(switchAdminRequest(payload))
   }
 
@@ -64,6 +67,6 @@ const PrivateRoute: React.FC<any> = ({ component: Component, ...rest }) => {
       />
     </React.Fragment>
   )
-}
+})
 
 export { PrivateRoute }

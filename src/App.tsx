@@ -1,15 +1,8 @@
-import { Fragment } from 'react'
-import { AuthContextProvider } from 'contexts'
 import Routes from 'routes/Routes'
+import './App.less'
 
 const App = () => {
-  return (
-    <Fragment>
-      <AuthContextProvider>
-        <Routes />
-      </AuthContextProvider>
-    </Fragment>
-  )
+  return <Routes />
 }
 
 export default App

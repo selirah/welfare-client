@@ -1,18 +1,18 @@
 import React from 'react'
 import { Row, Col, Form, Input, Button, Alert, Typography } from 'antd'
-import { LoginFields } from 'interfaces'
+import { ResendReset } from 'interfaces'
 import { path } from 'helpers/path'
 
-interface LoginFormProps {
-  values: LoginFields
-  onSubmit(values: LoginFields): void
+interface ResetPasswordFormProps {
+  values: ResendReset
+  onSubmit(values: ResendReset): void
   btnLoad: boolean
   error: string | null
 }
 
-const { Link, Title } = Typography
+const { Title, Link } = Typography
 
-const LoginForm: React.FC<LoginFormProps> = (props) => {
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = (props) => {
   const { btnLoad, error, onSubmit, values } = props
 
   const renderError = (error: any) => (
@@ -44,7 +44,7 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
         md={12}
       >
         <Title level={3} style={{ fontWeight: 700, color: '#7367f0' }}>
-          Login
+          Reset password
         </Title>
         {error ? renderError(error) : null}
         <Form
@@ -69,35 +69,16 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
           >
             <Input placeholder="Email" />
           </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-            hasFeedback
-          >
-            <Input.Password placeholder="Password" />
-          </Form.Item>
-          <Row style={{ marginBottom: '1.5rem' }}>
-            <Col span={12}>
-              <Link href={path.reset} strong>
-                Forgotten Password
-              </Link>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
-              <Link href={path.resend} strong>
-                Resend Code
-              </Link>
-            </Col>
-          </Row>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={btnLoad}>
-              {btnLoad ? 'Processing..' : 'Login'}
+              {btnLoad ? 'Processing..' : 'Submit'}
             </Button>
           </Form.Item>
           <Row style={{ marginTop: '1.5rem' }}>
             <Col span={24}>
-              No account yet?{' '}
-              <Link href={path.register} strong>
-                Sign Up
+              Remembered password?{' '}
+              <Link href={path.login} strong>
+                Log in
               </Link>
             </Col>
           </Row>
@@ -107,4 +88,4 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
   )
 }
 
-export default LoginForm
+export default ResetPasswordForm

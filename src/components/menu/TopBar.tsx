@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory, useParams } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 import { Layout, Menu, Dropdown, Avatar } from 'antd'
 import {
   MenuUnfoldOutlined,
@@ -8,7 +9,7 @@ import {
 } from '@ant-design/icons'
 import { SettingsMenu } from './SettingsMenu'
 import { path } from 'helpers/path'
-import { AuthContext } from 'contexts'
+import { useStore } from 'hooks/StoreHook'
 
 interface TopBarProps {
   collapsed: boolean
@@ -19,8 +20,11 @@ interface ParamProps {
   pageId: string
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ collapsed, toggle }) => {
-  const { onLogoutUser } = useContext(AuthContext)
+export const TopBar: React.FC<TopBarProps> = observer((props) => {
+  const { collapsed, toggle } = props
+  const {
+    authStore: { onLogoutUser }
+  } = useStore()
   const history = useHistory()
   const { Header } = Layout
   const [header, setHeader] = useState(<Link to={path.home}>Dashboard</Link>)
@@ -76,4 +80,4 @@ export const TopBar: React.FC<TopBarProps> = ({ collapsed, toggle }) => {
       </Menu>
     </Header>
   )
-}
+})
