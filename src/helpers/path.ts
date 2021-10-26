@@ -17,5 +17,6 @@ export const path = {
   expenses: '/expenses',
   incomes: '/incomes',
   users: '/users',
-  clients: 'admin/clients'
+  clients: 'admin/clients',
+  settings: '/settings'
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useHistory } from 'react-router'
+import { useHistory, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import VerifyForm from 'containers/auth/VerifyForm'
 import { VerificationFields, User } from 'interfaces'
@@ -31,14 +31,13 @@ const Verify = observer(() => {
   })
   const history = useHistory()
   const [redirectToReferer, setRedirectToReferrer] = useState(false)
-  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     if (isUserLoggedIn()) {
       const user = isUserLoggedIn()
       const usr: User = JSON.parse(user!)
       if (usr.token) {
-        setUser(usr)
+        authStore.onSetUser(usr)
         setRedirectToReferrer(true)
       }
     }
@@ -54,21 +53,17 @@ const Verify = observer(() => {
     history.push(path.login)
   }
 
-  if (redirectToReferer && user) {
-    const { role } = user
+  if (redirectToReferer && authStore.user) {
+    const { role } = authStore.user
     switch (role) {
       case roles.ADMIN:
-        history.push(path.home)
-        break
+        return <Redirect push to={path.home} />
       case roles.SUPER:
-        history.push(path.clients)
-        break
+        return <Redirect push to={path.clients} />
       case roles.USER:
-        history.push(path.home)
-        break
+        return <Redirect push to={path.home} />
       default:
-        history.push(path.home)
-        break
+        return <Redirect push to={path.home} />
     }
   }
 

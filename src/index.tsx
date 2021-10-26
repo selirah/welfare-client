@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
-// import './index.css'
+import './index.css'
 import reportWebVitals from './reportWebVitals'
 import jwtDecode from 'jwt-decode'
 import { path } from 'helpers/path'

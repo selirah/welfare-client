@@ -1,14 +1,26 @@
 import { action, observable, makeObservable } from 'mobx'
 import { path } from 'helpers/path'
 
+const link = localStorage.getItem('location')
 export class AdminStore {
-  activeMenu = path.home
+  topHeader = 'Home'
+  location = link ? link : path.home
 
   constructor() {
-    makeObservable(this, { activeMenu: observable, onSetActiveMenu: action })
+    makeObservable(this, {
+      topHeader: observable,
+      onSetTopHeader: action,
+      location: observable,
+      onSetLocation: action
+    })
   }
 
-  onSetActiveMenu(menu: string) {
-    this.activeMenu = menu
+  onSetTopHeader(header: string) {
+    this.topHeader = header
+  }
+
+  onSetLocation(location: string) {
+    this.topHeader = location
+    localStorage.setItem('location', location)
   }
 }

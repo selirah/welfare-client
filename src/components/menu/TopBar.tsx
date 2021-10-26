@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
-import { Layout, Menu, Dropdown, Avatar } from 'antd'
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined
-} from '@ant-design/icons'
+import { Layout, Menu, Dropdown, Avatar, Typography } from 'antd'
+import * as Icons from '@ant-design/icons'
 import { SettingsMenu } from './SettingsMenu'
-import { path } from 'helpers/path'
 import { useStore } from 'hooks/StoreHook'
 
 interface TopBarProps {
@@ -16,63 +10,31 @@ interface TopBarProps {
   toggle(): void
 }
 
-interface ParamProps {
-  pageId: string
-}
+const { Header } = Layout
+const { Link } = Typography
 
 export const TopBar: React.FC<TopBarProps> = observer((props) => {
   const { collapsed, toggle } = props
-  const {
-    authStore: { onLogoutUser }
-  } = useStore()
-  const history = useHistory()
-  const { Header } = Layout
-  const [header, setHeader] = useState(<Link to={path.home}>Dashboard</Link>)
-  const { pathname } = history.location
-  const { pageId } = useParams<ParamProps>()
-
-  const logoutUser = () => {
-    localStorage.clear()
-    onLogoutUser()
-  }
-
-  useEffect(() => {
-    switch (pathname) {
-      case path.home:
-        setHeader(<Link to={path.home}>Home</Link>)
-        break
-
-      case path.clients:
-        setHeader(
-          <React.Fragment>
-            <Link to={path.clients}>Clients</Link>
-          </React.Fragment>
-        )
-        break
-
-      case path.profile:
-        setHeader(
-          <React.Fragment>
-            <Link to={path.profile}>Profile</Link>
-          </React.Fragment>
-        )
-        break
-    }
-  }, [pathname, pageId])
+  const { adminStore } = useStore()
 
   return (
     <Header className="site-layout-background" style={{ padding: 0 }}>
-      {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-        className: 'trigger',
-        onClick: toggle
-      })}
-      <span className="portal-title">{header}</span>
+      {React.createElement(
+        collapsed ? Icons.MenuUnfoldOutlined : Icons.MenuFoldOutlined,
+        {
+          className: 'trigger',
+          onClick: toggle
+        }
+      )}
+      <span className="portal-title">
+        <Link strong>{adminStore.topHeader}</Link>
+      </span>
       <Menu mode="horizontal" className="f-right">
         <Menu.Item key="1">
-          <Dropdown overlay={<SettingsMenu logoutUser={logoutUser} />}>
+          <Dropdown overlay={<SettingsMenu />}>
             <Avatar
               shape="square"
-              icon={<UserOutlined style={{ color: '#42A5F5' }} />}
+              icon={<Icons.UserOutlined style={{ color: '#42A5F5' }} />}
               style={{ background: 'transparent' }}
             />
           </Dropdown>
