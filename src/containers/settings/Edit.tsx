@@ -175,6 +175,9 @@ const Edit = observer(() => {
                 ))}
               </Select>
             </Form.Item>
+            <Form.Item name="id" hidden>
+              <Input />
+            </Form.Item>
           </Col>
         </Row>
         <Row>

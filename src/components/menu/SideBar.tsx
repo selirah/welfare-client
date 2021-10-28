@@ -34,13 +34,13 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
       collapsed={collapsed}
       breakpoint="lg"
       onCollapse={onCollapsed}
-      theme="dark"
+      theme="light"
     >
       <div className="logo" />
       <Menu
         mode="inline"
         defaultSelectedKeys={[adminStore.active]}
-        theme="dark"
+        theme="light"
       >
         {user.role === 'ADMIN' ? (
           <>

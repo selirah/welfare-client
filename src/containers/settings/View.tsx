@@ -109,9 +109,7 @@ const View = observer(() => {
             <Col sm={24} md={24} lg={12}>
               <h4 className="school-labels">Payment Type</h4>
               <h4 className="school-values">
-                {institution
-                  ? getPaymentType(parseInt(institution.payment_type))
-                  : ''}
+                {institution ? getPaymentType(institution.payment_type) : ''}
               </h4>
             </Col>
           </Row>

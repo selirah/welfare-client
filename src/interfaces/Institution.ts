@@ -6,7 +6,7 @@ export interface Institution {
   email: string
   phone: string
   sender_id: string
-  payment_type: string
+  payment_type: number
   api_key: string
   logo: string
   created_at: string

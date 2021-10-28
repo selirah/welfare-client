@@ -7,6 +7,7 @@ import Verify from 'pages/auth/Verify'
 import ResendCode from 'pages/auth/ResendCode'
 import ResetPassword from 'pages/auth/ResetPassword'
 import Settings from 'pages/settings/index'
+import Members from 'pages/members/index'
 import { path } from 'helpers/path'
 
 const Routes = () => {
@@ -20,6 +21,7 @@ const Routes = () => {
         <Route exact path={path.reset} component={ResetPassword} />
         <PrivateRoute exact path={path.home} component={Home} />
         <PrivateRoute path={path.settings} component={Settings} />
+        <PrivateRoute path={path.members} component={Members} />
       </Switch>
     </Router>
   )
