@@ -48,7 +48,7 @@ const PrivateRoute: React.FC<any> = observer((props) => {
         {...rest}
         render={(props) =>
           user ? (
-            <Layout style={{ height: '100vh' }}>
+            <Layout style={{ minHeight: '100vh' }}>
               <SideBar
                 collapsed={collapsed}
                 onCollapsed={toggle}

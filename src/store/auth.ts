@@ -7,6 +7,7 @@ import {
   ResendReset
 } from 'interfaces'
 import { callApiPost } from 'api'
+import { authorization } from 'utils/authorization'
 
 export class AuthStore {
   isSubmitting = false
@@ -58,6 +59,7 @@ export class AuthStore {
         this.onSetSubmitting(false)
         this.onSetUser(response.data)
         this.onSetSuccess(true)
+        yield authorization(response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data))
         localStorage.setItem('token', JSON.stringify(response.data.token))
       }

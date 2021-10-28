@@ -19,7 +19,7 @@ if (token) {
   const currentTime = moment(new Date()).format('X')
 
   if (futureTime > currentTime) {
-    authorization(token)
+    authorization(JSON.parse(token))
   } else {
     localStorage.removeItem('user')
     localStorage.removeItem('token')

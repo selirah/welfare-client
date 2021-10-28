@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { autorun } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useHistory, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Layout } from 'antd'
 import VerifyForm from 'containers/auth/VerifyForm'
 import { VerificationFields, User } from 'interfaces'
@@ -11,6 +12,8 @@ import { useStore } from 'hooks/StoreHook'
 import { isUserLoggedIn, openNotification } from 'utils'
 
 const { Content } = Layout
+
+const pathLocation = localStorage.getItem('location')
 
 const Verify = observer(() => {
   const { authStore } = useStore()
@@ -30,7 +33,6 @@ const Verify = observer(() => {
     }
   })
   const history = useHistory()
-  const [redirectToReferer, setRedirectToReferrer] = useState(false)
 
   useEffect(() => {
     if (isUserLoggedIn()) {
@@ -38,34 +40,34 @@ const Verify = observer(() => {
       const usr: User = JSON.parse(user!)
       if (usr.token) {
         authStore.onSetUser(usr)
-        setRedirectToReferrer(true)
+        switch (usr.role) {
+          case roles.ADMIN:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+          case roles.SUPER:
+            history.push(pathLocation ? pathLocation : path.clients)
+            break
+          case roles.USER:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (authStore.success && !authStore.user) {
-    openNotification(
-      'success',
-      'Nice!',
-      'You have successfully verified your account. Please login to proceed'
-    )
-    history.push(path.login)
-  }
-
-  if (redirectToReferer && authStore.user) {
-    const { role } = authStore.user
-    switch (role) {
-      case roles.ADMIN:
-        return <Redirect push to={path.home} />
-      case roles.SUPER:
-        return <Redirect push to={path.clients} />
-      case roles.USER:
-        return <Redirect push to={path.home} />
-      default:
-        return <Redirect push to={path.home} />
-    }
-  }
+  useEffect(() => {
+    autorun(() => {
+      if (authStore.success && !authStore.user) {
+        openNotification(
+          'success',
+          'Nice!',
+          'You have successfully verified your account. Please login to proceed'
+        )
+        history.push(path.login)
+      }
+    })
+  }, [history, authStore])
 
   const onSubmit = (payload: VerificationFields) => {
     authStore.verify(payload)

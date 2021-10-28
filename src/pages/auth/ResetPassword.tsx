@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { autorun } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useHistory, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Layout } from 'antd'
 import ResetPasswordForm from 'containers/auth/ResetPasswordForm'
 import { ResendReset, User } from 'interfaces'
@@ -12,6 +13,8 @@ import { isUserLoggedIn, openNotification } from 'utils'
 
 const { Content } = Layout
 
+const pathLocation = localStorage.getItem('location')
+
 const ResetPassword = observer(() => {
   const { authStore } = useStore()
 
@@ -19,7 +22,6 @@ const ResetPassword = observer(() => {
     email: ''
   })
   const history = useHistory()
-  const [redirectToReferer, setRedirectToReferrer] = useState(false)
 
   useEffect(() => {
     if (isUserLoggedIn()) {
@@ -27,34 +29,34 @@ const ResetPassword = observer(() => {
       const usr: User = JSON.parse(user!)
       if (usr.token) {
         authStore.onSetUser(usr)
-        setRedirectToReferrer(true)
+        switch (usr.role) {
+          case roles.ADMIN:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+          case roles.SUPER:
+            history.push(pathLocation ? pathLocation : path.clients)
+            break
+          case roles.USER:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+        }
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (authStore.success && !authStore.user) {
-    openNotification(
-      'success',
-      'Nice!',
-      'A new temporal password has been send to you via SMS. Use it to login and change your password'
-    )
-    history.push(path.login)
-  }
-
-  if (redirectToReferer && authStore.user) {
-    const { role } = authStore.user
-    switch (role) {
-      case roles.ADMIN:
-        return <Redirect push to={path.home} />
-      case roles.SUPER:
-        return <Redirect push to={path.clients} />
-      case roles.USER:
-        return <Redirect push to={path.home} />
-      default:
-        return <Redirect push to={path.home} />
-    }
-  }
+  useEffect(() => {
+    autorun(() => {
+      if (authStore.success && !authStore.user) {
+        openNotification(
+          'success',
+          'Nice!',
+          'A new temporal password has been send to you via SMS. Use it to login and change your password'
+        )
+        history.push(path.login)
+      }
+    })
+  }, [history, authStore])
 
   const onSubmit = (payload: ResendReset) => {
     authStore.resetPassword(payload)

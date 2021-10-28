@@ -1,4 +1,5 @@
 import { notification } from 'antd'
+import { PaymentTypes } from 'interfaces'
 
 export const isUserLoggedIn = () => localStorage.getItem('user')
 
@@ -12,4 +13,9 @@ export const openNotification = (
     description: description,
     duration: 10
   })
+}
+
+export const getPaymentType = (type: number) => {
+  const pt = PaymentTypes.find((p) => p.value === type)
+  return pt ? pt.label : ''
 }

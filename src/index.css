@@ -251,8 +251,8 @@ body {
 }
 
 .site-content {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
   min-height: 80vh;
   padding-top: 20px;
 }
@@ -558,7 +558,7 @@ text.highcharts-credits {
 
 .school-values {
   font-size: 0.8rem;
-  color: #f57c00;
+  color: #7367f0;
   font-weight: 400;
 }
 
@@ -747,10 +747,9 @@ text.highcharts-credits {
   }
 
   .site-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    min-height: 80vh;
-    padding-top: 0;
+    margin: 24px 16px;
+    padding: 24px;
+    min-height: 280;
   }
 
   .students-table .ant-table-tbody > tr > td,
@@ -791,10 +790,9 @@ text.highcharts-credits {
   }
 
   .site-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    min-height: 80vh;
-    padding-top: 0;
+    margin: 24px 16px;
+    padding: 24px;
+    min-height: 280;
   }
 
   .students-table .ant-table-tbody > tr > td,

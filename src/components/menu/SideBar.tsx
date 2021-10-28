@@ -21,9 +21,10 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
   const { collapsed, onCollapsed, user, onImpersonate } = props
   const { adminStore } = useStore()
 
-  const handleFunction = (path: string, header: string) => {
+  const handleFunction = (path: string, header: string, active: string) => {
     adminStore.onSetTopHeader(header)
     adminStore.onSetLocation(path)
+    adminStore.onSetActive(active)
   }
 
   return (
@@ -33,23 +34,27 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
       collapsed={collapsed}
       breakpoint="lg"
       onCollapse={onCollapsed}
-      theme="light"
+      theme="dark"
     >
       <div className="logo" />
-      <Menu mode="inline" defaultSelectedKeys={['1']} theme="light">
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={[adminStore.active]}
+        theme="dark"
+      >
         {user.role === 'ADMIN' ? (
           <>
             <Menu.Item
               key="1"
               icon={<Icons.HomeOutlined />}
-              onClick={() => handleFunction(path.home, 'Home')}
+              onClick={() => handleFunction(path.home, 'Home', '1')}
             >
               <Link to={path.home}>Home</Link>
             </Menu.Item>
             <Menu.Item
               key="2"
               icon={<Icons.SettingOutlined />}
-              onClick={() => handleFunction(path.settings, 'Settings')}
+              onClick={() => handleFunction(path.settings, 'Settings', '2')}
             >
               <Link to={path.settings}>Settings</Link>
             </Menu.Item>
@@ -65,7 +70,7 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub1a"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(path.members, 'Members')}
+                onClick={() => handleFunction(path.members, 'Members', 'sub1a')}
               >
                 <Link to={`${path.members}`}>List</Link>
               </Menu.Item>
@@ -73,7 +78,7 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub1b"
                 icon={<Icons.UserAddOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.members}/add`, 'Members/Add')
+                  handleFunction(`${path.members}/add`, 'Members/Add', 'sub1b')
                 }
               >
                 <Link to={`${path.members}/add`}>Add</Link>
@@ -82,7 +87,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub1c"
                 icon={<Icons.CloudUploadOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.members}/upload`, 'Members/Upload')
+                  handleFunction(
+                    `${path.members}/upload`,
+                    'Members/Upload',
+                    'sub1c'
+                  )
                 }
               >
                 <Link to={`${path.members}/upload`}>Upload</Link>
@@ -103,7 +112,8 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 onClick={() =>
                   handleFunction(
                     `${path.contributions}/settings`,
-                    'Contributions/Settings'
+                    'Contributions/Settings',
+                    'sub2a'
                   )
                 }
               >
@@ -113,7 +123,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub2b"
                 icon={<Icons.OrderedListOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.contributions}`, 'Contributions')
+                  handleFunction(
+                    `${path.contributions}`,
+                    'Contributions',
+                    'sub2b'
+                  )
                 }
               >
                 <Link to={`${path.contributions}`}>List</Link>
@@ -124,7 +138,8 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 onClick={() =>
                   handleFunction(
                     `${path.contributions}/add`,
-                    'Contributions/Add'
+                    'Contributions/Add',
+                    'sub2c'
                   )
                 }
               >
@@ -136,7 +151,8 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 onClick={() =>
                   handleFunction(
                     `${path.contributions}/upload`,
-                    'Contributions/Upload'
+                    'Contributions/Upload',
+                    'sub2d'
                   )
                 }
               >
@@ -158,7 +174,8 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 onClick={() =>
                   handleFunction(
                     `${path.expenses}/settings`,
-                    'Expenses/Settings'
+                    'Expenses/Settings',
+                    'sub3a'
                   )
                 }
               >
@@ -167,7 +184,9 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub3b"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(`${path.expenses}`, 'Expenses')}
+                onClick={() =>
+                  handleFunction(`${path.expenses}`, 'Expenses', 'sub3b')
+                }
               >
                 <Link to={`${path.expenses}`}>List</Link>
               </Menu.Item>
@@ -175,7 +194,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub3c"
                 icon={<Icons.PlusCircleOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.expenses}/add`, 'Expenses/Add')
+                  handleFunction(
+                    `${path.expenses}/add`,
+                    'Expenses/Add',
+                    'sub3c'
+                  )
                 }
               >
                 <Link to={`${path.expenses}/add`}>Add</Link>
@@ -184,7 +207,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub3d"
                 icon={<Icons.CloudUploadOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.expenses}/upload`, 'Expenses/Upload')
+                  handleFunction(
+                    `${path.expenses}/upload`,
+                    'Expenses/Upload',
+                    'sub3d'
+                  )
                 }
               >
                 <Link to={`${path.expenses}/upload`}>Upload</Link>
@@ -203,7 +230,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub4a"
                 icon={<Icons.SettingOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.incomes}/settings`, 'Incomes/Settings')
+                  handleFunction(
+                    `${path.incomes}/settings`,
+                    'Incomes/Settings',
+                    'sub4a'
+                  )
                 }
               >
                 <Link to={`${path.incomes}/settings`}>Settings</Link>
@@ -211,7 +242,9 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub4b"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(`${path.incomes}`, 'Incomes')}
+                onClick={() =>
+                  handleFunction(`${path.incomes}`, 'Incomes', 'sub4b')
+                }
               >
                 <Link to={`${path.incomes}`}>List</Link>
               </Menu.Item>
@@ -219,7 +252,7 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub4c"
                 icon={<Icons.PlusCircleOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.incomes}/add`, 'Incomes/Add')
+                  handleFunction(`${path.incomes}/add`, 'Incomes/Add', 'sub4c')
                 }
               >
                 <Link to={`${path.incomes}/add`}>Add</Link>
@@ -228,7 +261,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub4d"
                 icon={<Icons.CloudUploadOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.incomes}/upload`, 'Incomes/Upload')
+                  handleFunction(
+                    `${path.incomes}/upload`,
+                    'Incomes/Upload',
+                    'sub4d'
+                  )
                 }
               >
                 <Link to={`${path.incomes}/upload`}>Upload</Link>
@@ -249,7 +286,8 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 onClick={() =>
                   handleFunction(
                     `${path.donations}/settings`,
-                    'Donations/Settings'
+                    'Donations/Settings',
+                    'sub5a'
                   )
                 }
               >
@@ -258,7 +296,9 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub5b"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(`${path.donations}`, 'Donations')}
+                onClick={() =>
+                  handleFunction(`${path.donations}`, 'Donations', 'sub5b')
+                }
               >
                 <Link to={`${path.donations}`}>List</Link>
               </Menu.Item>
@@ -266,7 +306,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub5c"
                 icon={<Icons.PlusCircleOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.donations}/add`, 'Donations/Add')
+                  handleFunction(
+                    `${path.donations}/add`,
+                    'Donations/Add',
+                    'sub5c'
+                  )
                 }
               >
                 <Link to={`${path.donations}/add`}>Add</Link>
@@ -275,7 +319,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub5d"
                 icon={<Icons.CloudUploadOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.donations}/upload`, 'Donations/Upload')
+                  handleFunction(
+                    `${path.donations}/upload`,
+                    'Donations/Upload',
+                    'sub5d'
+                  )
                 }
               >
                 <Link to={`${path.donations}/upload`}>Upload</Link>
@@ -294,7 +342,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub6a"
                 icon={<Icons.SettingOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.loans}/settings`, 'Loans/Settings')
+                  handleFunction(
+                    `${path.loans}/settings`,
+                    'Loans/Settings',
+                    'sub6'
+                  )
                 }
               >
                 <Link to={`${path.loans}/settings`}>Settings</Link>
@@ -302,14 +354,18 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub6b"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(`${path.loans}`, 'Loans')}
+                onClick={() =>
+                  handleFunction(`${path.loans}`, 'Loans', 'sub6b')
+                }
               >
                 <Link to={`${path.loans}`}>List</Link>
               </Menu.Item>
               <Menu.Item
                 key="sub6c"
                 icon={<Icons.PlusCircleOutlined />}
-                onClick={() => handleFunction(`${path.loans}/add`, 'Loans/Add')}
+                onClick={() =>
+                  handleFunction(`${path.loans}/add`, 'Loans/Add', 'sub6c')
+                }
               >
                 <Link to={`${path.loans}/add`}>Add</Link>
               </Menu.Item>
@@ -317,7 +373,11 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
                 key="sub6d"
                 icon={<Icons.CloudUploadOutlined />}
                 onClick={() =>
-                  handleFunction(`${path.loans}/upload`, 'Loans/Upload')
+                  handleFunction(
+                    `${path.loans}/upload`,
+                    'Loans/Upload',
+                    'sub6d'
+                  )
                 }
               >
                 <Link to={`${path.loans}/upload`}>Upload</Link>
@@ -335,14 +395,18 @@ export const SideBar: React.FC<SideBarProps> = observer((props) => {
               <Menu.Item
                 key="sub7a"
                 icon={<Icons.OrderedListOutlined />}
-                onClick={() => handleFunction(`${path.users}`, 'Users')}
+                onClick={() =>
+                  handleFunction(`${path.users}`, 'Users', 'sub7a')
+                }
               >
                 <Link to={`${path.users}`}>List</Link>
               </Menu.Item>
               <Menu.Item
                 key="sub7b"
                 icon={<Icons.PlusCircleOutlined />}
-                onClick={() => handleFunction(`${path.users}/add`, 'Users/Add')}
+                onClick={() =>
+                  handleFunction(`${path.users}/add`, 'Users/Add', 'sub7b')
+                }
               >
                 <Link to={`${path.users}/add`}>Add</Link>
               </Menu.Item>

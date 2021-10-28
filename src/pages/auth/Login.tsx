@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import { autorun } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useHistory, Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Layout } from 'antd'
 import LoginForm from 'containers/auth/LoginForm'
 import { LoginFields, User } from 'interfaces'
@@ -44,19 +45,24 @@ const Login = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (authStore.success && authStore.user) {
-    const { role } = authStore.user
-    switch (role) {
-      case roles.ADMIN:
-        return <Redirect push to={path.home} />
-      case roles.SUPER:
-        return <Redirect push to={path.clients} />
-      case roles.USER:
-        return <Redirect push to={path.home} />
-      default:
-        return <Redirect push to={path.home} />
-    }
-  }
+  useEffect(() => {
+    autorun(() => {
+      if (authStore.success && authStore.user) {
+        const { role } = authStore.user
+        switch (role) {
+          case roles.ADMIN:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+          case roles.SUPER:
+            history.push(pathLocation ? pathLocation : path.clients)
+            break
+          case roles.USER:
+            history.push(pathLocation ? pathLocation : path.home)
+            break
+        }
+      }
+    })
+  }, [history, authStore])
 
   const onSubmit = (payload: LoginFields) => {
     authStore.login(payload)

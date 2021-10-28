@@ -14,7 +14,7 @@ const routes = [
     exact: true
   },
   {
-    path: 'edit/:id',
+    path: 'edit',
     component: lazy(() => import('containers/settings/Edit')),
     exact: true
   }
